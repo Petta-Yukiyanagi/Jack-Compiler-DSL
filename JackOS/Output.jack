@@ -1,0 +1,247 @@
+class Output {
+    static int cursorX, cursorY;
+    static Array charMaps;
+    static int initialized;
+
+    function void init() {
+        if (initialized = 1) { return; }
+        let initialized = 1;
+
+        let cursorX = 0;
+        let cursorY = 0;
+        do Output.initMap();
+        return;
+    }
+
+    function void initMap() {
+        var int i;
+
+        let charMaps = Array.new(1408);
+
+        let i = 0;
+        while (i < 1408) {
+            let charMaps[i] = 0;
+            let i = i + 1;
+        }
+
+        // ================================
+        // フォント create 群
+        // ================================
+   // --- Custom Designed Fonts ---
+    do Output.create(65, 0, 56, 68, 68, 124, 68, 68, 0, 0, 0, 0); // 'A'
+    do Output.create(66, 0, 60, 68, 60, 68, 68, 60, 0, 0, 0, 0); // 'B'
+    do Output.create(67, 0, 56, 68, 4, 4, 68, 56, 0, 0, 0, 0); // 'C'
+    do Output.create(68, 0, 60, 68, 68, 68, 68, 60, 0, 0, 0, 0); // 'D'
+    do Output.create(69, 0, 124, 4, 124, 4, 4, 124, 0, 0, 0, 0); // 'E'
+    do Output.create(70, 0, 124, 4, 60, 4, 4, 4, 0, 0, 0, 0); // 'F'
+    do Output.create(71, 0, 56, 68, 4, 116, 68, 120, 0, 0, 0, 0); // 'G'
+    do Output.create(72, 0, 68, 68, 124, 68, 68, 68, 0, 0, 0, 0); // 'H'
+    do Output.create(73, 0, 124, 16, 16, 16, 16, 124, 0, 0, 0, 0); // 'I'
+    do Output.create(74, 0, 120, 64, 64, 64, 68, 56, 0, 0, 0, 0); // 'J'
+    do Output.create(75, 0, 68, 36, 28, 28, 36, 68, 0, 0, 0, 0); // 'K'
+    do Output.create(76, 0, 4, 4, 4, 4, 4, 124, 0, 0, 0, 0); // 'L'
+    do Output.create(77, 0, 68, 108, 108, 84, 84, 68, 0, 0, 0, 0); // 'M'
+    do Output.create(78, 0, 36, 44, 44, 52, 52, 36, 0, 0, 0, 0); // 'N'
+    do Output.create(79, 0, 56, 68, 68, 68, 68, 56, 0, 0, 0, 0); // 'O'
+    do Output.create(80, 0, 60, 68, 68, 60, 4, 4, 0, 0, 0, 0); // 'P'
+    do Output.create(81, 0, 24, 36, 36, 36, 52, 120, 0, 0, 0, 0); // 'Q'
+    do Output.create(82, 0, 60, 68, 68, 60, 68, 68, 0, 0, 0, 0); // 'R'
+    do Output.create(83, 0, 56, 68, 56, 64, 68, 56, 0, 0, 0, 0); // 'S'
+    do Output.create(84, 0, 124, 16, 16, 16, 16, 16, 0, 0, 0, 0); // 'T'
+    do Output.create(85, 0, 68, 68, 68, 68, 68, 56, 0, 0, 0, 0); // 'U'
+    do Output.create(86, 0, 68, 68, 68, 40, 40, 16, 0, 0, 0, 0); // 'V'
+    do Output.create(87, 0, 68, 84, 84, 84, 40, 40, 0, 0, 0, 0); // 'W'
+    do Output.create(88, 0, 68, 68, 56, 56, 68, 68, 0, 0, 0, 0); // 'X'
+    do Output.create(89, 0, 68, 68, 40, 16, 16, 16, 0, 0, 0, 0); // 'Y'
+    do Output.create(90, 0, 124, 32, 16, 60, 8, 124, 0, 0, 0, 0); // 'Z' 
+
+    do Output.create(97, 0, 0, 56, 64, 120, 68, 120, 0, 0, 0, 0); // 'a'
+    do Output.create(98, 0, 4, 4, 60, 68, 68, 60, 0, 0, 0, 0); // 'b'
+    do Output.create(99, 0, 0, 56, 68, 4, 68, 56, 0, 0, 0, 0); // 'c'
+    do Output.create(100, 0, 64, 64, 120, 68, 68, 120, 0, 0, 0, 0); // 'd'
+    do Output.create(101, 0, 0, 56, 68, 124, 4, 120, 0, 0, 0, 0); // 'e'
+    do Output.create(102, 0, 56, 4, 60, 4, 4, 4, 0, 0, 0, 0); // 'f'
+    do Output.create(103, 0, 0, 0, 120, 68, 68, 120, 64, 56, 0, 0); // 'g'
+    do Output.create(104, 0, 4, 4, 28, 36, 36, 36, 0, 0, 0, 0); // 'h'
+    do Output.create(105, 0, 16, 0, 16, 16, 16, 16, 0, 0, 0, 0); // 'i'
+    do Output.create(106, 0, 32, 0, 32, 32, 32, 40, 16, 0, 0, 0); // 'j'
+    do Output.create(107, 0, 4, 4, 36, 28, 36, 68, 0, 0, 0, 0); // 'k'
+    do Output.create(108, 0, 8, 8, 8, 8, 8, 16, 0, 0, 0, 0); // 'l'
+    do Output.create(109, 0, 0, 0, 60, 84, 84, 84, 0, 0, 0, 0); // 'm'
+    do Output.create(110, 0, 0, 0, 28, 36, 36, 36, 0, 0, 0, 0); // 'n'
+    do Output.create(111, 0, 0, 0, 24, 36, 36, 24, 0, 0, 0, 0); // 'o'
+    do Output.create(112, 0, 0, 0, 24, 36, 28, 4, 4, 0, 0, 0); // 'p'
+    do Output.create(113, 0, 0, 0, 56, 36, 52, 32, 32, 0, 0, 0); // 'q'
+    do Output.create(114, 0, 0, 0, 116, 12, 4, 4, 0, 0, 0, 0); // 'r'
+    do Output.create(115, 0, 0, 120, 4, 56, 64, 60, 0, 0, 0, 0); // 's'
+    do Output.create(116, 0, 16, 124, 16, 16, 80, 32, 0, 0, 0, 0); // 't'
+    do Output.create(117, 0, 0, 0, 68, 68, 68, 120, 0, 0, 0, 0); // 'u'
+    do Output.create(118, 0, 0, 68, 68, 68, 40, 16, 0, 0, 0, 0); // 'v'
+    do Output.create(119, 0, 0, 68, 68, 84, 84, 40, 0, 0, 0, 0); // 'w'
+    do Output.create(120, 0, 0, 36, 36, 24, 36, 36, 0, 0, 0, 0); // 'x'
+    do Output.create(121, 0, 0, 68, 68, 120, 64, 64, 56, 0, 0, 0); // 'y'
+    do Output.create(122, 0, 0, 124, 64, 56, 4, 124, 0, 0, 0, 0); // 'z' 
+
+    do Output.create(49, 0, 16, 24, 16, 16, 16, 56, 0, 0, 0, 0); // '1'
+    do Output.create(50, 0, 56, 68, 32, 16, 8, 124, 0, 0, 0, 0); // '2'
+    do Output.create(51, 0, 56, 68, 48, 64, 68, 56, 0, 0, 0, 0); // '3'
+    do Output.create(52, 0, 96, 80, 72, 124, 64, 64, 0, 0, 0, 0); // '4'
+    do Output.create(53, 0, 124, 4, 60, 64, 64, 60, 0, 0, 0, 0); // '5'
+    do Output.create(54, 0, 16, 8, 60, 68, 68, 56, 0, 0, 0, 0); // '6'
+    do Output.create(55, 0, 120, 68, 32, 16, 16, 16, 0, 0, 0, 0); // '7'
+    do Output.create(56, 0, 56, 68, 56, 68, 68, 56, 0, 0, 0, 0); // '8'
+    do Output.create(57, 0, 56, 68, 68, 120, 64, 56, 0, 0, 0, 0); // '9'
+    do Output.create(48, 0, 56, 68, 68, 68, 68, 56, 0, 0, 0, 0); // '0'
+    do Output.create(63, 0, 56, 68, 32, 16, 0, 16, 0, 0, 0, 0); // '?'
+    do Output.create(33, 0, 16, 16, 16, 16, 0, 16, 0, 0, 0, 0); // '!'
+    do Output.create(46, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0); // '.'
+    do Output.create(44, 0, 0, 0, 0, 0, 8, 4, 0, 0, 0, 0); // ','
+    do Output.create(58, 0, 0, 16, 0, 0, 16, 0, 0, 0, 0, 0); // ':'
+    do Output.create(59, 0, 0, 16, 0, 0, 16, 8, 0, 0, 0, 0); // ';'
+    do Output.create(34, 0, 36, 36, 0, 0, 0, 0, 0, 0, 0, 0); // '"'
+    do Output.create(40, 0, 24, 12, 12, 12, 12, 24, 0, 0, 0, 0); // '('
+    do Output.create(41, 0, 48, 96, 96, 96, 96, 48, 0, 0, 0, 0); // ')'
+    do Output.create(47, 0, 0, 64, 32, 16, 8, 4, 0, 0, 0, 0); // '/'
+    do Output.create(37, 0, 0, 76, 44, 16, 104, 100, 0, 0, 0, 0); // '%'
+    do Output.create(45, 0, 0, 0, 0, 124, 0, 0, 0, 0, 0, 0); // '-'
+    do Output.create(43, 0, 0, 16, 16, 124, 16, 16, 0, 0, 0, 0); // '+'
+    do Output.create(61, 0, 0, 0, 124, 0, 124, 0, 0, 0, 0, 0); // '='
+    do Output.create(60, 0, 0, 16, 8, 4, 8, 16, 0, 0, 0, 0); // '<'
+    do Output.create(62, 0, 0, 16, 32, 64, 32, 16, 0, 0, 0, 0); // '>'
+    do Output.create(64, 0, 120, 68, 100, 100, 4, 120, 0, 0, 0, 0); // '@'
+    do Output.create(35, 0, 0, 40, 124, 40, 124, 40, 0, 0, 0, 0); // '#'
+    do Output.create(95, 0, 0, 0, 0, 0, 0, 124, 0, 0, 0, 0); // '_'
+    // -----------------------------------------
+
+        return;
+    }
+
+    //---------------------------------------
+    // create() 本体（initMap の外側）
+    //---------------------------------------
+    function void create(
+        int ascii,
+        int r0, int r1, int r2, int r3, int r4, int r5,
+        int r6, int r7, int r8, int r9, int r10
+    ) {
+        var int base, i;
+
+        let base = 0;
+        let i = 0;
+
+        while (i < 11) {
+            let base = base + ascii;
+            let i = i + 1;
+        }
+
+        let charMaps[base + 0] = r0;
+        let charMaps[base + 1] = r1;
+        let charMaps[base + 2] = r2;
+        let charMaps[base + 3] = r3;
+        let charMaps[base + 4] = r4;
+        let charMaps[base + 5] = r5;
+        let charMaps[base + 6] = r6;
+        let charMaps[base + 7] = r7;
+        let charMaps[base + 8] = r8;
+        let charMaps[base + 9] = r9;
+        let charMaps[base + 10] = r10;
+
+        return;
+    }
+
+    // ここからは printChar, printString, printInt など（変更なし）
+    // --------------------------------------------
+     function int getMap(char c, int row) {
+        var int base, i;
+
+        if ((c < 0) | (c > 127)) {
+            return 0;
+        }
+
+        let base = 0;
+        let i = 0;
+
+        while (i < 11) {
+            let base = base + c;
+            let i = i + 1;
+        }
+
+        return charMaps[base + row];
+    }
+    
+    function void moveCursor(int i, int j) {
+        let cursorY = i;
+        let cursorX = j;
+        return;
+    }
+
+    function void printChar(char c) {
+        var int i, map, addr, v;
+        var boolean even;
+
+        if (c = 128) { do Output.println(); return; }
+        if (c = 129) { do Output.backSpace(); return; }
+
+        if ((cursorX < 0) | (cursorX > 63) | (cursorY < 0) | (cursorY > 22)) {
+            return;
+        }
+
+        let addr = 16384 + Math.multiply(cursorY, 352) + (cursorX / 2);
+        let even = ((cursorX & 1) = 0);
+
+        let i = 0;
+        while (i < 11) {
+            let map = Output.getMap(c, i);
+            let v = Memory.peek(addr);
+
+            if (even) {
+                do Memory.poke(addr, (v & -256) | map);
+            } else {
+                do Memory.poke(addr, (v & 255) | Math.multiply(map, 256));
+            }
+
+            let addr = addr + 32;
+            let i = i + 1;
+        }
+
+        let cursorX = cursorX + 1;
+        if (cursorX > 63) { do Output.println(); }
+        return;
+    }
+
+    function void printString(String s) {
+        var int i, n;
+
+        let n = s.length();
+        let i = 0;
+
+        while (i < n) {
+            do Output.printChar(s.charAt(i));
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    function void printInt(int i) {
+        var String s;
+        let s = String.new(6);
+        do s.setInt(i);
+        do Output.printString(s);
+        do s.dispose();
+        return;
+    }
+
+    function void println() {
+        let cursorX = 0;
+        let cursorY = cursorY + 1;
+        return;
+    }
+
+    function void backSpace() {
+        if (cursorX > 0) {
+            let cursorX = cursorX - 1;
+        }
+        return;
+    }
+}

@@ -1,0 +1,119 @@
+class Screen {
+
+    static boolean color;     // true = 黒
+    static Array twoToThe;    // 2のべき乗 (0..15)
+
+    /** 初期化 */
+    function void init() {
+        var int i;
+
+        let color = true;
+
+        // 2のべき乗テーブル
+        let twoToThe = Array.new(16);
+        let twoToThe[0] = 1;
+
+        let i = 1;
+        while (i < 16) {
+            let twoToThe[i] = twoToThe[i - 1] + twoToThe[i - 1];  // <<=1
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    /** 画面クリア */
+    function void clearScreen() {
+        var int i, addr;
+
+        let i = 0;
+        let addr = 16384;
+
+        while (i < 8192) {
+            do Memory.poke(addr, 0);
+            let addr = addr + 1;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** 色設定 */
+    function void setColor(boolean b) {
+        let color = b;
+        return;
+    }
+
+    /** 1ピクセル描画（除算を使わない安全版） */
+    function void drawPixel(int x, int y) {
+        var int addr, bit, wordIndex, val;
+
+        if ((x < 0) | (x > 511) | (y < 0) | (y > 255)) {
+            return;
+        }
+
+        // wordIndex = x >> 4 (安全版：16 ずつ減らす)
+        let wordIndex = x;
+        let bit = 0;
+        while (wordIndex > 15) {
+            let wordIndex = wordIndex - 16;
+            let bit = bit + 1;
+        }
+        // ここで bit = x/16, wordIndex = x%16
+
+        // アドレス：16384 + y*32 + bit
+        let addr = 16384 + Math.multiply(y, 32) + bit;
+
+        let val = Memory.peek(addr);
+
+        if (color) {
+            do Memory.poke(addr, val | twoToThe[wordIndex]);
+        } else {
+            do Memory.poke(addr, val & ~(twoToThe[wordIndex]));
+        }
+
+        return;
+    }
+
+    /** 水平線 */
+    function void drawHLine(int x1, int x2, int y) {
+        var int tmp;
+
+        if (x1 > x2) {
+            let tmp = x1; let x1 = x2; let x2 = tmp;
+        }
+
+        while (~(x1 > x2)) {
+            do Screen.drawPixel(x1, y);
+            let x1 = x1 + 1;
+        }
+        return;
+    }
+
+    /** 垂直線 */
+    function void drawVLine(int x, int y1, int y2) {
+        var int tmp;
+
+        if (y1 > y2) {
+            let tmp = y1; let y1 = y2; let y2 = tmp;
+        }
+
+        while (~(y1 > y2)) {
+            do Screen.drawPixel(x, y1);
+            let y1 = y1 + 1;
+        }
+        return;
+    }
+
+    /** 塗りつぶし矩形 */
+    function void drawRectangle(int x1, int y1, int x2, int y2) {
+        var int y;
+
+        let y = y1;
+        while (~(y > y2)) {
+            do Screen.drawHLine(x1, x2, y);
+            let y = y + 1;
+        }
+        return;
+    }
+
+}

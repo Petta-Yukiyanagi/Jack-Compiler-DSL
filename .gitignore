@@ -1,0 +1,20 @@
+# Build artifacts (do not commit)
+
+# Final binary output
+bin/**
+src/**
+
+# Java compile outputs
+Jack_Buildsystem/JackAssembler/out/**
+Jack_Buildsystem/JackCompiler/out/**
+Jack_Buildsystem/JackVMConverter/out/**
+
+# JackCompiler generated outputs
+Jack_Buildsystem/JackCompiler/jack_build/vm/**
+Jack_Buildsystem/JackCompiler/jack_build/xml/**
+
+# VMConverter generated outputs
+Jack_Buildsystem/JackVMConverter/jack_build/**
+
+# Simulator build artifact
+Jack_Simulation/hack_emu.exe

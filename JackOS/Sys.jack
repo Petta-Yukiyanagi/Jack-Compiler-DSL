@@ -1,0 +1,48 @@
+// Sys.jack
+// エミュレータと連携するための最小限の Sys
+
+class Sys {
+
+    /** OS のエントリポイント
+     *  VM のブートストラップから呼ばれる想定:
+     *    SP=256 → call Sys.init
+     */
+    function void init() {
+        // 必要最低限だけ初期化（本当は色々あってもいいけど、行列計算には不要）
+        
+        do Memory.init();
+        do Math.init();
+
+        // 行列計算ベンチマーク本体
+        do Main.main();
+        
+
+        // 終了（PASS フラグを立てる）
+        do Sys.halt();
+
+        return;
+    }
+
+    /** 正常終了: PASS_ADDR(30001) に -1 を書いて無限ループ */
+    function void halt() {
+        // PASS_FLAG = -1 (0xFFFF)
+        do Memory.poke(30000, -1);
+
+        // 以降は無限ループ（ただしエミュレータ側が PASS_FLAG を見て止まる）
+        while (true) {
+            // 何もしない
+        }
+        return;
+    }
+
+    /** 異常終了: HALT_ADDR(30000) にエラーコードを書いて無限ループ */
+    function void error(int code) {
+        do Memory.poke(30002, 6666);
+        do Memory.poke(30001, code);
+
+        while (true) {
+            // 何もしない
+        }
+        return;
+    }
+}

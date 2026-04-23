@@ -1,0 +1,143 @@
+class Math {
+
+    /** 互換用（必要なら空でOK） */
+    function void init() {
+        return;
+    }
+
+    /** x * y（O(|y|) の単純な加算ループ） */
+    function int multiply(int x, int y) {
+        var int sum, i, negX, negY;
+
+        let negX = 0;
+        if (x < 0) {
+            let x = 0 - x;
+            let negX = 1;
+        }
+
+        let negY = 0;
+        if (y < 0) {
+            let y = 0 - y;
+            let negY = 1;
+        }
+
+        let sum = 0;
+        let i = 0;
+        while (i < y) {
+            let sum = sum + x;
+            let i = i + 1;
+        }
+
+        if (negX = 1) {
+            let sum = 0 - sum;
+        }
+
+        if (negY = 1) {
+            let sum = 0 - sum;
+        }
+
+        return sum;
+    }
+
+    /** x / y（整数除算, 0除算は0を返す簡易実装） */
+    function int divide(int x, int y) {
+        var int q, rem, neg, limit;
+
+        // 0除算ガード
+        if (y = 0) {
+            return 0;
+        }
+
+        let neg = 0;
+
+        // 符号の正規化
+        if (x < 0) {
+            let x = 0 - x;
+            let neg = 1 - neg;
+        }
+        if (y < 0) {
+            let y = 0 - y;
+            let neg = 1 - neg;
+        }
+
+        let q   = 0;
+        let rem = x;
+
+        // rem >= y  を  rem > (y - 1) で表現（~ を使わない）
+        let limit = y - 1;
+        while (rem > limit) {
+            let rem = rem - y;
+            let q   = q + 1;
+        }
+
+        // 符号復元
+        if (neg = 1) {
+            let q = 0 - q;
+        }
+        return q;
+    }
+
+    /** 整数平方根 floor(sqrt(x)) — 二分探索 */
+    function int isqrt(int x) {
+        var int lo, hi, mid, sq;
+
+        // x <= 0 のときは 0 を返す
+        if (x < 1) {
+            return 0;
+        }
+
+        let lo = 1;
+        let hi = x;
+
+        // lo < hi の間、二分探索
+        while (lo < hi) {
+            // mid = floor((lo + hi + 1)/2)
+            let mid = Math.divide(lo + hi + 1, 2);
+            let sq  = Math.multiply(mid, mid);
+
+            // if (sq > x) hi = mid - 1; else lo = mid;
+            if (sq > x) {
+                let hi = mid - 1;
+            } else {
+                let lo = mid;
+            }
+        }
+        return lo;
+    }
+
+    /** 互換用: sqrt(x) = isqrt(x) */
+    function int sqrt(int x) {
+        return Math.isqrt(x);
+    }
+
+    /** ベクトルの長さ（整数近似ノルム）row:1次元配列, n:要素数 */
+    function int rowNorm(Array row, int n) {
+        var int i, v, sum;
+
+        let sum = 0;
+        let i   = 0;
+        while (i < n) {
+            let v   = row[i];
+            let sum = sum + Math.multiply(v, v);
+            let i   = i + 1;
+        }
+        return Math.isqrt(sum);
+    }
+
+    /** 行の正規化（ゼロ割はスキップ） */
+    function void normalizeRow(Array row, int n) {
+        var int i, norm;
+
+        let norm = Math.rowNorm(row, n);
+        if (norm = 0) {
+            return;
+        }
+
+        let i = 0;
+        while (i < n) {
+            let row[i] = Math.divide(row[i], norm);
+            let i      = i + 1;
+        }
+        return;
+    }
+}

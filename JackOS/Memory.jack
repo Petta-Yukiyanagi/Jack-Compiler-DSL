@@ -1,0 +1,153 @@
+class Memory {
+
+    static Array memory;
+    static int freeList;
+
+    static int HEAP_BASE;
+    static int HEAP_END;
+
+    static int FL_LENGTH;
+    static int FL_NEXT;
+
+    static int NIL;
+
+    function void init() {
+        let memory = 0;
+
+        let HEAP_BASE = 2048;
+        let HEAP_END  = 24576;
+
+        let FL_LENGTH = 0;
+        let FL_NEXT   = 1;
+
+        let NIL       = 0;
+
+        let freeList = HEAP_BASE;
+
+        //free blockの長さとnext
+        let memory[freeList + FL_LENGTH] = HEAP_END - HEAP_BASE;
+        let memory[freeList + FL_NEXT]   = NIL;
+
+        return;
+    }
+
+    function int peek(int address) {
+        return memory[address];
+    }
+
+    function void poke(int address, int value) {
+        let memory[address] = value;
+        return;
+    }
+
+    function int getFreeList() {
+        return freeList;
+    }
+
+    function int read(int a) {
+        return memory[a];
+    }
+
+    // ======================
+    // alloc
+    // ======================
+    function int alloc(int size) {
+        var int need, prev, p, blockSize, next, allocHeader, newFree;
+
+        let need = size + 1;   // ヘッダ 1 語ぶんを足す
+        let prev = NIL;
+        let p = freeList;
+
+        // freeList を first-fit 探索
+        while (p != NIL) {
+
+            let blockSize = memory[p + FL_LENGTH];
+
+            // 十分大きなブロックを発見
+            if (blockSize >= need) {
+
+                // ===== 1) exact fit =====
+                if (blockSize == need) {
+
+                    // freeList から p を抜く
+                    if (prev == NIL) {
+                        let freeList = memory[p + FL_NEXT];
+                    } else {
+                        let memory[prev + FL_NEXT] = memory[p + FL_NEXT];
+                    }
+
+                    let allocHeader = p;
+                    let memory[allocHeader + FL_LENGTH] = need;
+                    let memory[allocHeader + FL_NEXT] = 0;
+
+                    return allocHeader + 1;
+                }
+
+                // ===== 2) split =====
+                let next = memory[p + FL_NEXT];
+                let allocHeader = p;
+
+                // ---- alloc 部分のヘッダ ----
+                let memory[allocHeader + FL_LENGTH] = need;
+                let memory[allocHeader + FL_NEXT] = 0;
+
+                // ---- 新しい free block の先頭 ----
+                let newFree = allocHeader + need;
+
+                let memory[newFree + FL_LENGTH] = blockSize - need;
+                let memory[newFree + FL_NEXT]   = next;
+
+                // freeList のリンクを newFree に付け替え
+                if (prev == NIL) {
+                    let freeList = newFree;
+                } else {
+                    let memory[prev + FL_NEXT] = newFree;
+                }
+
+                return allocHeader + 1;
+            }
+
+            // ===== 次の free ブロックへ =====
+            let prev = p;
+            let p = memory[p + FL_NEXT];
+        }
+
+        // 見つからなかった
+        return 0;
+    }
+
+    // ======================
+    // deAlloc
+    // ======================
+    function void deAlloc(Array obj) {
+        var int header;
+        var int size;
+        var int prev;
+        var int p;
+        var int next;
+
+        let header = obj - 1;
+        let size = memory[header + FL_LENGTH];
+
+        // 挿入位置を探す
+        let prev = NIL;
+        let p = freeList;
+
+        while ((p > NIL) & (p < header)) {
+            let prev = p;
+            let p = memory[p + FL_NEXT];
+        }
+
+        // header を prev と p の間へ挿入
+        let memory[header + FL_LENGTH] = size;
+        let memory[header + FL_NEXT] = p;
+
+        if (prev == NIL) {
+            let freeList = header;
+        } else {
+            let memory[prev + FL_NEXT] = header;
+        }
+
+        return;
+    }
+}

@@ -1,0 +1,48 @@
+# ==========================================
+# Jack Compiler 設定ファイル
+# ==========================================
+
+# 1. 出力モード (mode)
+# xml : 構文解析の結果をXML形式で出力します（デバッグ用）
+# vm  : 最終的なVMコードを出力します（実行用）
+mode=vm
+
+# 2. プロジェクトの入力元 (in)
+# コンパイルしたい .jack ファイルが入っているフォルダを指定します
+# . は「現在のフォルダ」を指します
+in=src
+
+# 3. JackOS ライブラリの場所 (os)
+# Array.jack や Memory.jack などが入っているフォルダのパスを指定します
+# 空にすると OS ライブラリを含めずにコンパイルします
+os=JackOS
+
+# 4. 出力先ルート (out)
+# コンパイル結果を保存するフォルダ名です
+# この中に自動的に /xml や /vm フォルダが作られます
+out=Jack_Buildsystem/JackCompiler/jack_build
+
+# 5. トークンダンプ (dumpTokens)
+# true にすると、解析中にトークンの分割結果をコンソールに表示します
+dumpTokens=false
+
+# ==========================================
+# Jack VM Converter 設定
+# ==========================================
+
+# VMファイルの入力元ディレクトリ
+vm.in=Jack_Buildsystem/JackCompiler/jack_build/vm
+
+# アセンブリ(.asm)の出力先パス
+# 指定しない場合は入力ディレクトリ名に基づき自動生成されます
+vm.out=Jack_Buildsystem/JackVMConverter/jack_build/output.asm
+
+# ==========================================
+# Jack Assembler 設定
+# ==========================================
+# 読み込むアセンブリファイル (.asm)
+asm.in=Jack_Buildsystem/JackVMConverter/jack_build/output.asm
+
+# 書き出すバイナリファイル (.hack)
+# 空白にすると入力ファイルと同じ場所に .hack を作ります
+asm.out=bin/Prog.hack
