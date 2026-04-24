@@ -95,6 +95,10 @@ dsl mul C, A, B;
 3. `dsl mul` で C に積を計算
 4. 必要に応じて `Memory.poke` で RAM にダンプして検証
 
+![DSL Diagram 1](images/DSL1.png)
+
+![DSL Diagram 2](images/DSL2.png)
+
 ## 実行方法
 
 ### Windows
@@ -145,6 +149,8 @@ run_emu.bat
 cd Jack_Simulation
 ./run_emu.sh
 ```
+
+![SIM Diagram 1](images/sim.png)
 
 補足:
 
